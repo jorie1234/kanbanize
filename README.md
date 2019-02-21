@@ -1,2 +1,2 @@
-# kanbanize
+# Kanbanize
 A Kanbanize API Client
