@@ -1,18 +1,27 @@
 package kanbanize
 
 import (
+	"fmt"
+
 	resty "gopkg.in/resty.v1"
 )
+
+const (
+	CardWorkflow        = 0
+	InitiativesWorkflow = 1
+)
+
+type Board struct {
+	Name string `json:"name"`
+	ID   string `json:"id"`
+}
 
 //ProjectsAndBoards represents all boards and projects
 type ProjectsAndBoards struct {
 	Projects []struct {
-		Name   string `json:"name"`
-		ID     string `json:"id"`
-		Boards []struct {
-			Name string `json:"name"`
-			ID   string `json:"id"`
-		} `json:"boards"`
+		Name   string  `json:"name"`
+		ID     string  `json:"id"`
+		Boards []Board `json:"boards"`
 	} `json:"projects"`
 }
 
@@ -66,20 +75,33 @@ type Link struct {
 //Links represents all relations of a task
 type Links map[string]Link
 
+type Tasks []Task
+
+func (t *Tasks) GetColumnNameByColumnId(id int) string {
+	for _, d := range *t {
+		if d.Columnid == fmt.Sprintf("%d", id) {
+			return d.Columnname
+		}
+	}
+	return "-"
+}
+
 //Client is the Kanbanize Client
 type Client struct {
-	APIURL string
-	APIKey string
-	client *resty.Client
+	APIURL   string
+	APIV2URL string
+	APIKey   string
+	client   *resty.Client
 }
 
 //NewClient returns an new Client for the Kanbanize API
 func NewClient(APIRUL, APIKey string) *Client {
 	rc := resty.New()
 	return &Client{
-		APIKey: APIKey,
-		APIURL: APIRUL,
-		client: rc,
+		APIKey:   APIKey,
+		APIURL:   APIRUL + "/index.php/api/kanbanize/",
+		APIV2URL: APIRUL + "/api/v2/",
+		client:   rc,
 	}
 }
 

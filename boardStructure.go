@@ -1,5 +1,7 @@
 package kanbanize
 
+import "fmt"
+
 //BoardStructure represents the structure of all boards
 type BoardStructure struct {
 	Columns []struct {
@@ -31,6 +33,15 @@ type BoardStructure struct {
 		Flowtype    string `json:"flowtype"`
 		Color       string `json:"color"`
 	} `json:"lanes"`
+}
+
+func (bs *BoardStructure) GetColumnNameByColumnId(id int) string {
+	for _, c := range bs.Columns {
+		if c.Lcid == fmt.Sprintf("%d", id) {
+			return c.Lcname
+		}
+	}
+	return "-"
 }
 
 //GetBoardStructure returns the structure of all boards
