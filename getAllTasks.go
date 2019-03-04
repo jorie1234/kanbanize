@@ -111,13 +111,14 @@ func (t *getAllTasks) Get() (*Tasks, error) {
 
 	var res Tasks
 	for _, v := range result {
-		t := v.Task
+		tsk := v.Task
+		tsk.Boardid = t.Boardid
 		if v.BlockedInt == 1 || v.BlockedString == "1" {
-			t.Blocked = "1"
+			tsk.Blocked = "1"
 		} else {
-			t.Blocked = "0"
+			tsk.Blocked = "0"
 		}
-		res = append(res, t)
+		res = append(res, tsk)
 	}
 	return &res, nil
 }
