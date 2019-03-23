@@ -53,6 +53,7 @@ type Task struct {
 	Laneid                 string        `json:"laneid,omitempty"`
 	Position               string        `json:"position,omitempty"`
 	Workflow               int           `json:"workflow,omitempty"`
+	Createdat              string        `json:"createdat,omitempty"`
 	Attachments            struct {
 	} `json:"attachments,omitempty"`
 	Columnpath   string        `json:"columnpath,omitempty"`
